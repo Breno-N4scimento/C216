@@ -1,15 +1,14 @@
 PYTHON = python
-PIP = pip
-VENV = .venv
+POETRY = $(PYTHON) -m poetry
 
 install:
-	$(PIP) install -r requirements.txt
+	$(POETRY) install --no-root
 
 run:
-	$(PYTHON) main.py
+	$(POETRY) run uvicorn main:app --reload
 
 test:
-	$(PYTHON) -m pytest
+	$(POETRY) run pytest
 
 clean:
 	$(PYTHON) -c "import shutil; shutil.rmtree('__pycache__', ignore_errors=True)"
@@ -21,6 +20,5 @@ help:
 	@echo "  make test     - Executa os testes"
 	@echo "  make clean    - Remove arquivos temporários"
 	@echo "  make help     - Mostra esta ajuda"
-
 
 .PHONY: install run test clean help
