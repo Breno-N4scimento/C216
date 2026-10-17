@@ -5,12 +5,12 @@ on:
   push:
     paths:
       - "backend/**"
-      - ".github/workflows/ci-backend.yml"
+      - ".github/workflows/CI_backend.yaml"
 
   pull_request:
     paths:
       - "backend/**"
-      - ".github/workflows/ci-backend.yml"
+      - ".github/workflows/CI_backend.yaml"
 
 jobs:
   build:
@@ -25,15 +25,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: pipx install poetry
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
           cache: poetry
           cache-dependency-path: backend/poetry.lock
-
-      - name: Install Poetry
-        run: pipx install poetry
 
       - name: Install Dependencies
         run: poetry install --no-root
@@ -54,15 +54,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: pipx install poetry
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
           cache: poetry
           cache-dependency-path: backend/poetry.lock
-
-      - name: Install Poetry
-        run: pipx install poetry
 
       - name: Install Dependencies
         run: poetry install --no-root
@@ -102,15 +102,15 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Install Poetry
+        run: pipx install poetry
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.14"
           cache: poetry
           cache-dependency-path: backend/poetry.lock
-
-      - name: Install Poetry
-        run: pipx install poetry
 
       - name: Install Dependencies
         run: poetry install --no-root
