@@ -2,8 +2,10 @@
 PYTHON = python
 POETRY = $(PYTHON) -m poetry
 BACKEND_DIR = backend
+FRONTEND_DIR = frontend
+NPM = npm
 
-# Desenvolvimento
+#Backend
 
 install:
 	cd $(BACKEND_DIR) && $(POETRY) install
@@ -29,7 +31,31 @@ clean:
 	cd $(BACKEND_DIR) && $(PYTHON) -c "import shutil; shutil.rmtree('__pycache__', ignore_errors=True)"
 
 
-# Docker
+#Frontend
+
+frontend-install:
+	cd $(FRONTEND_DIR) && $(NPM) ci
+
+frontend-run:
+	cd $(FRONTEND_DIR) && $(NPM) run dev
+
+frontend-build:
+	cd $(FRONTEND_DIR) && $(NPM) run build
+
+frontend-test:
+	cd $(FRONTEND_DIR) && $(NPM) run test
+
+frontend-lint:
+	cd $(FRONTEND_DIR) && $(NPM) run lint
+
+frontend-format:
+	cd $(FRONTEND_DIR) && $(NPM) run format
+
+frontend-check:
+	cd $(FRONTEND_DIR) && $(NPM) run check
+
+
+#docker
 
 docker-build:
 	docker compose build
@@ -55,25 +81,33 @@ docker-ps:
 docker-clean:
 	docker compose down -v
 
-# Ajuda
-
 help:
 	@echo "Comandos disponíveis:"
 	@echo ""
-	@echo "Desenvolvimento:"
-	@echo "  make install    - Instala as dependências"
-	@echo "  make run        - Executa o backend localmente"
-	@echo "  make format     - Formata o código com Ruff"
-	@echo "  make lint       - Verifica o código com Ruff"
-	@echo "  make test       - Prepara o banco e executa todos os testes"
+	@echo "Backend:"
+	@echo "  make install          - Instala as dependências"
+	@echo "  make run              - Executa o backend"
+	@echo "  make format           - Formata o backend com Ruff"
+	@echo "  make lint             - Verifica o backend com Ruff"
+	@echo "  make test             - Prepara o banco e executa os testes"
+	@echo ""
+	@echo "Frontend:"
+	@echo "  make frontend-install - Instala as dependências"
+	@echo "  make frontend-run     - Executa o frontend"
+	@echo "  make frontend-build   - Gera o build"
+	@echo "  make frontend-test    - Executa os testes"
+	@echo "  make frontend-lint    - Verifica o código com Biome"
+	@echo "  make frontend-format  - Formata o código"
+	@echo "  make frontend-check   - Executa as verificações do Biome"
 	@echo ""
 	@echo "Docker:"
-	@echo "  make docker-build - Constrói as imagens"
-	@echo "  make docker-up    - Inicia os containers"
-	@echo "  make up-build     - Constrói as imagens e inicia os serviços"
-	@echo "  make docker-down  - Para os containers"
-	@echo "  make docker-logs  - Exibe os logs dos containers"
-	@echo "  make docker-ps    - Mostra o status dos containers"
-	@echo "  make docker-clean - Remove containers e volumes"
+	@echo "  make docker-build     - Constrói as imagens"
+	@echo "  make docker-up        - Inicia os containers"
+	@echo "  make up-build         - Constrói e inicia os serviços"
+	@echo "  make docker-down      - Para os containers"
+	@echo "  make docker-logs      - Exibe os logs"
+	@echo "  make docker-ps        - Mostra o status dos containers"
+	@echo "  make docker-clean     - Remove containers e volumes"
 
-.PHONY: install run test test-db lint format clean docker-build docker-up up-build docker-down docker-logs docker-restart docker-ps docker-clean help
+
+.PHONY: install run test test-db lint format clean frontend-install frontend-run frontend-build frontend-test frontend-lint frontend-format frontend-check docker-build docker-up up-build docker-down docker-logs docker-restart docker-ps docker-clean help
