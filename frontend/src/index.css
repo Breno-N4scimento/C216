@@ -1,8 +1,8 @@
-
 @import "tailwindcss";
 
 :root {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: #1e293b;
   background: #f1f5f9;
   font-synthesis: none;

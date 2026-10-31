@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { ItemForm } from "./components/ItemForm";
 import { ItemList } from "./components/ItemList";
@@ -17,9 +16,7 @@ export default function App() {
   }
 
   function deleteItem(id) {
-    setItems((currentItems) =>
-      currentItems.filter((item) => item.id !== id),
-    );
+    setItems((currentItems) => currentItems.filter((item) => item.id !== id));
   }
 
   return (

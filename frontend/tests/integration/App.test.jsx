@@ -16,7 +16,5 @@ it("cadastra um item e o exibe na lista", async () => {
   expect(screen.getByText("Notebook")).toBeInTheDocument();
   expect(screen.getByText("14 polegadas")).toBeInTheDocument();
 
-  expect(
-    screen.queryByText("Nenhum item cadastrado."),
-  ).not.toBeInTheDocument();
+  expect(screen.queryByText("Nenhum item cadastrado.")).not.toBeInTheDocument();
 });

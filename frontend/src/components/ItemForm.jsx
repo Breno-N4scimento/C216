@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { validateItem } from "../validation";
 
@@ -41,10 +40,7 @@ export function ItemForm({ onAdd }) {
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-4">
       <div>
-        <label
-          htmlFor="name"
-          className="mb-1 block text-sm font-medium"
-        >
+        <label htmlFor="name" className="mb-1 block text-sm font-medium">
           Nome
         </label>
 
@@ -65,10 +61,7 @@ export function ItemForm({ onAdd }) {
       </div>
 
       <div>
-        <label
-          htmlFor="description"
-          className="mb-1 block text-sm font-medium"
-        >
+        <label htmlFor="description" className="mb-1 block text-sm font-medium">
           Descrição
         </label>
 
