@@ -1,4 +1,3 @@
-
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, expect, it, vi } from "vitest";
@@ -17,7 +16,7 @@ it("cadastra um item e o exibe na lista", async () => {
     description: "14 polegadas",
   };
 
-    const fetchMock = vi.fn(async (_url, options = {}) => {
+  const fetchMock = vi.fn(async (_url, options = {}) => {
     if (options.method === "POST") {
       return {
         ok: true,
@@ -65,9 +64,7 @@ it("exibe uma mensagem enquanto carrega os itens", () => {
 
   render(<App />);
 
-  expect(screen.getByRole("status")).toHaveTextContent(
-    "Carregando itens...",
-  );
+  expect(screen.getByRole("status")).toHaveTextContent("Carregando itens...");
 });
 
 it("exibe uma mensagem quando ocorre erro ao carregar os itens", async () => {

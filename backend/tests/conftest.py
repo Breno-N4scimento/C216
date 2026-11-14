@@ -17,8 +17,9 @@ from app.main import app
 from app.models.item import Item
 
 # URL do banco exclusivo para os testes.
-TEST_DATABASE_URL = (
-    "postgresql+psycopg://postgres:postgres@db:5432/backend_test_db"
+TEST_DATABASE_URL = os.getenv(
+    "TEST_DATABASE_URL",
+    "postgresql+psycopg://postgres:postgres@db:5432/backend_test_db",
 )
 
 # Engine utilizado pelos testes de integração.

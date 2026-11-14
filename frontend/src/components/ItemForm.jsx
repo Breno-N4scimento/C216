@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { validateItem } from "../validation";
 
@@ -39,9 +38,7 @@ export function ItemForm({ onAdd }) {
       setName("");
       setDescription("");
     } catch (error) {
-      setSubmitError(
-        error.message || "Não foi possível cadastrar o item.",
-      );
+      setSubmitError(error.message || "Não foi possível cadastrar o item.");
     } finally {
       setIsSubmitting(false);
     }
@@ -72,10 +69,7 @@ export function ItemForm({ onAdd }) {
       </div>
 
       <div>
-        <label
-          htmlFor="description"
-          className="mb-1 block text-sm font-medium"
-        >
+        <label htmlFor="description" className="mb-1 block text-sm font-medium">
           Descrição
         </label>
 

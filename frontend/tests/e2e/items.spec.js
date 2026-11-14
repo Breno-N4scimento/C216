@@ -1,4 +1,3 @@
-
 import { expect, test } from "@playwright/test";
 
 test("cadastra um item e mantém os dados após recarregar a página", async ({

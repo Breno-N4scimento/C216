@@ -1,4 +1,3 @@
-
 const API_URL = (
   import.meta.env.VITE_API_URL || "http://localhost:8000"
 ).replace(/\/$/, "");
@@ -9,10 +8,7 @@ async function handleResponse(response) {
 
     try {
       const data = await response.json();
-      message =
-        typeof data.detail === "string"
-          ? data.detail
-          : message;
+      message = typeof data.detail === "string" ? data.detail : message;
     } catch {
       // Mantém a mensagem padrão.
     }

@@ -1,12 +1,7 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { ItemForm } from "./components/ItemForm";
 import { ItemList } from "./components/ItemList";
-import {
-  createItem,
-  deleteItem,
-  listItems,
-} from "./services/items";
+import { createItem, deleteItem, listItems } from "./services/items";
 
 export default function App() {
   const [items, setItems] = useState([]);
@@ -40,9 +35,7 @@ export default function App() {
   async function removeItem(id) {
     try {
       await deleteItem(id);
-      setItems((currentItems) =>
-        currentItems.filter((item) => item.id !== id),
-      );
+      setItems((currentItems) => currentItems.filter((item) => item.id !== id));
       setError("");
     } catch (error) {
       setError(error.message || "Não foi possível excluir o item.");
@@ -72,7 +65,11 @@ export default function App() {
           <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm text-slate-500">Status</p>
             <p className="mt-2 text-xl font-semibold text-emerald-700">
-              {isLoading ? "Carregando..." : error ? "Com problemas" : "Operacional"}
+              {isLoading
+                ? "Carregando..."
+                : error
+                  ? "Com problemas"
+                  : "Operacional"}
             </p>
             <p className="mt-1 text-xs text-slate-500">
               Dados consultados no backend.
