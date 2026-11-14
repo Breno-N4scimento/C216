@@ -4,13 +4,13 @@ export function ItemList({ items, onDelete = () => {} }) {
   const [search, setSearch] = useState("");
 
   const filteredItems = items.filter((item) => {
-    const term = search.toLowerCase().trim();
+  const term = search.toLowerCase().trim();
 
-    return (
-      item.name.toLowerCase().includes(term) ||
-      item.description.toLowerCase().includes(term)
-    );
-  });
+  return (
+    item.name.toLowerCase().includes(term) ||
+    (item.description || "").toLowerCase().includes(term)
+  );
+});
 
   if (items.length === 0) {
     return <p>Nenhum item cadastrado.</p>;
@@ -41,7 +41,7 @@ export function ItemList({ items, onDelete = () => {} }) {
             >
               <h3 className="font-semibold text-slate-900">{item.name}</h3>
               <p className="mt-2 whitespace-pre-wrap text-sm text-slate-600">
-                {item.description}
+              {item.description || "Sem descrição."}
               </p>
 
               <button

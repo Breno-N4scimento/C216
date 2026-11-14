@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { validateItem } from "../validation";
 
@@ -5,9 +6,12 @@ export function ItemForm({ onAdd }) {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
+    setSubmitError("");
 
     const item = {
       name: name.trim(),
@@ -16,25 +20,31 @@ export function ItemForm({ onAdd }) {
 
     const result = validateItem(item);
 
-    // Exibe primeiro o erro do nome.
     if (result.errors.name) {
       setErrors({ name: result.errors.name });
       return;
     }
 
-    // Depois verifica a descrição.
     if (result.errors.description) {
       setErrors({ description: result.errors.description });
       return;
     }
 
-    // Cadastra o item somente se os campos forem válidos.
-    onAdd(item);
-
-    // Limpa o formulário após o cadastro.
-    setName("");
-    setDescription("");
     setErrors({});
+    setIsSubmitting(true);
+
+    try {
+      await onAdd(item);
+
+      setName("");
+      setDescription("");
+    } catch (error) {
+      setSubmitError(
+        error.message || "Não foi possível cadastrar o item.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -51,6 +61,7 @@ export function ItemForm({ onAdd }) {
           onChange={(event) => setName(event.target.value)}
           className="w-full rounded-lg border border-slate-300 px-3 py-2"
           placeholder="Nome do item"
+          disabled={isSubmitting}
         />
 
         {errors.name && (
@@ -61,7 +72,10 @@ export function ItemForm({ onAdd }) {
       </div>
 
       <div>
-        <label htmlFor="description" className="mb-1 block text-sm font-medium">
+        <label
+          htmlFor="description"
+          className="mb-1 block text-sm font-medium"
+        >
           Descrição
         </label>
 
@@ -73,6 +87,7 @@ export function ItemForm({ onAdd }) {
           className="w-full rounded-lg border border-slate-300 px-3 py-2"
           rows={3}
           placeholder="Descrição do item"
+          disabled={isSubmitting}
         />
 
         {errors.description && (
@@ -82,11 +97,18 @@ export function ItemForm({ onAdd }) {
         )}
       </div>
 
+      {submitError && (
+        <p role="alert" className="text-sm text-red-600">
+          {submitError}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700"
+        disabled={isSubmitting}
+        className="rounded-lg bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
       >
-        Adicionar
+        {isSubmitting ? "Cadastrando..." : "Adicionar"}
       </button>
     </form>
   );

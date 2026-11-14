@@ -111,3 +111,15 @@ help:
 
 
 .PHONY: install run test test-db lint format clean frontend-install frontend-run frontend-build frontend-test frontend-lint frontend-format frontend-check docker-build docker-up up-build docker-down docker-logs docker-restart docker-ps docker-clean help
+
+
+.PHONY: check
+check:
+	docker compose up -d --wait
+	docker compose exec backend pytest -v
+	docker compose exec backend ruff check .
+	cd frontend && npm.cmd run test
+	cd frontend && npm.cmd run lint
+	cd frontend && npm.cmd run build
+	docker compose up -d --build frontend
+	cd frontend && npx.cmd playwright test

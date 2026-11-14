@@ -1,22 +1,52 @@
-import { useState } from "react";
+
+import { useCallback, useEffect, useState } from "react";
 import { ItemForm } from "./components/ItemForm";
 import { ItemList } from "./components/ItemList";
+import {
+  createItem,
+  deleteItem,
+  listItems,
+} from "./services/items";
 
 export default function App() {
   const [items, setItems] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  function addItem({ name, description }) {
-    const newItem = {
-      id: `${Date.now()}-${Math.random()}`,
-      name,
-      description,
-    };
+  const loadItems = useCallback(async () => {
+    setIsLoading(true);
+    setError("");
+
+    try {
+      const data = await listItems();
+      setItems(data);
+    } catch (error) {
+      setError(error.message || "Não foi possível carregar os itens.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadItems();
+  }, [loadItems]);
+
+  async function addItem(item) {
+    const newItem = await createItem(item);
 
     setItems((currentItems) => [newItem, ...currentItems]);
   }
 
-  function deleteItem(id) {
-    setItems((currentItems) => currentItems.filter((item) => item.id !== id));
+  async function removeItem(id) {
+    try {
+      await deleteItem(id);
+      setItems((currentItems) =>
+        currentItems.filter((item) => item.id !== id),
+      );
+      setError("");
+    } catch (error) {
+      setError(error.message || "Não foi possível excluir o item.");
+    }
   }
 
   return (
@@ -42,13 +72,29 @@ export default function App() {
           <article className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
             <p className="text-sm text-slate-500">Status</p>
             <p className="mt-2 text-xl font-semibold text-emerald-700">
-              Operacional
+              {isLoading ? "Carregando..." : error ? "Com problemas" : "Operacional"}
             </p>
             <p className="mt-1 text-xs text-slate-500">
-              Dados mantidos temporariamente nesta sessão.
+              Dados consultados no backend.
             </p>
           </article>
         </section>
+
+        {error && (
+          <div
+            role="alert"
+            className="mb-6 rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          >
+            <p>{error}</p>
+            <button
+              type="button"
+              onClick={loadItems}
+              className="mt-2 font-semibold underline"
+            >
+              Tentar novamente
+            </button>
+          </div>
+        )}
 
         <div className="grid items-start gap-8 lg:grid-cols-2">
           <section
@@ -65,7 +111,11 @@ export default function App() {
             aria-label="Lista de itens"
             className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"
           >
-            <ItemList items={items} onDelete={deleteItem} />
+            {isLoading ? (
+              <p role="status">Carregando itens...</p>
+            ) : (
+              <ItemList items={items} onDelete={removeItem} />
+            )}
           </section>
         </div>
 
