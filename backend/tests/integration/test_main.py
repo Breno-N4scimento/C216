@@ -3,9 +3,6 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
-@pytest.fixture
-def client():
-    return TestClient(app)
 
 @pytest.fixture
 def client():
@@ -24,10 +21,7 @@ def test_root_response(client):
     assert response.json() == {"message": "Backend funcionando!"}
 
 
-@pytest.mark.parametrize(
-    "endpoint",
-    ["/", "/?teste=1", "/?teste=abc"]
-)
+@pytest.mark.parametrize("endpoint", ["/", "/?teste=1", "/?teste=abc"])
 def test_root_with_query_params(client, endpoint):
     response = client.get(endpoint)
 

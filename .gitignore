@@ -23,3 +23,20 @@ htmlcov/
 build/
 dist/
 *.egg-info/
+
+
+# Node.js dependencies
+node_modules/
+
+# Frontend build
+frontend/dist/
+
+# Test coverage
+coverage/
+
+# Environment variables
+.env.*
+!.env.example
+
+frontend/test-results/
+frontend/playwright-report/
